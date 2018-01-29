@@ -204,16 +204,6 @@ Function Install-R
     }
 }
 
-function Get-RPackages
-{
-    [CmdletBinding()]
-    Param(
-        [string] $File = 'packages.csv')
-
-    $ErrorActionPreference = 'Stop'
-    type $file | ConvertFrom-Csv | select Package, Version, Depends
-}
-
 function Install-RPackages
 {
     [CmdletBinding()]
