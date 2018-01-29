@@ -39,8 +39,7 @@ Function Install-R
     [CmdletBinding()]
     Param(
         [Version] $Version,
-        [string]  $Architecture,
-        [Uri]     $CRAN = 'https://cloud.r-project.org/',
+        [string]  $CRAN = 'https://cloud.r-project.org/',
         [string]  $InstallRoot,
         [string]  $InstallPath,
         [string]  $DownloadRoot,
@@ -66,10 +65,6 @@ Function Install-R
         $downloadRoot = Join-Path $env:TEMP R
     }
 
-    if (-not $architecture) {
-        $architecture = ('x64', 'i386')[$env:PROCESSOR_ARCHITECTURE -eq 'x86']
-    }
-
     if (-not $version)
     {
         $rversionFile = 'version.txt'
@@ -86,7 +81,7 @@ Function Install-R
         }
     }
 
-    Write-Verbose "Processing installation request for R $version ($architecture)..."
+    Write-Verbose "Processing installation request for R $version..."
 
     if (-not $installPath) {
         $installPath = Join-Path $installRoot "R-$version"
@@ -207,8 +202,7 @@ Function Install-R
 function Install-RPackages
 {
     [CmdletBinding()]
-    Param([string]   $File = 'packages.csv',
-          [DateTime] $CheckpointDate,
+    Param([DateTime] $CheckpointDate,
           [string]   $CheckpointLocation = (Join-Path $env:USERPROFILE '.checkpoint'))
 
     $ErrorActionPreference = 'Stop'
