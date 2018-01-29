@@ -22,6 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 #>
 
+# https://github.com/PowerShell/PSScriptAnalyzer#suppressing-rules
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingCmdletAliases", "", Scope="Function", Target="*")]
+param()
 function Get-RVersions
 {
     [CmdletBinding()]
