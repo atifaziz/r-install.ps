@@ -271,38 +271,4 @@ checkpoint('$('{0:yyyy-MM-dd}' -f $checkpointDate)',
     if ($LASTEXITCODE) {
         Write-Error "Error installing packages."
     }
-<#
-    Get-RPackages $File | select -First 1 |
-        % {
-            echo "$($_.Package) $($_.Version) [$($_.Depends)]"
-
-            $libSlashPath = $libPath -replace '\\', '/'
-
-            $e = "
-
-`"
-install.packages('devtools', lib = '$libSlashPath', repos = 'https://cloud.r-project.org', dependencies = TRUE)
-library(devtools)
-`"
-
-`"
-install.packages('$($_.Package)',
-                 version = '$($_.Version)',
-                 lib = c('$libSlashPath', .libPaths()),
-                 repos = 'https://cloud.r-project.org',
-                 verbose = TRUE)
-`"
-"
-
-            echo $e | Out-File -Encoding default $x
-
-            type $x
-
-            & $rScriptPath $x
-
-            if ($LASTEXITCODE) {
-                Write-Error "Error installing package."
-            }
-        }
-#>
 }
