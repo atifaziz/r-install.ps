@@ -70,11 +70,11 @@ Function Install-R
 
     if (-not $version)
     {
-        $rversionFile = 'version.txt'
+        $rversionFile = 'rversion.txt'
         Write-Verbose "No version specified so checking for local version specification file ($rversionFile)..."
-        if (Test-Path -PathType Leaf rversion.txt)
+        if (Test-Path -PathType Leaf $rversionFile)
         {
-            $version = [Version](type rversion.txt | ? { $_ -match '\b[0-9](\.[0-9]){1,3}\b' } | select -First 1 | % { $matches[0] })
+            $version = [Version](type $rversionFile | ? { $_ -match '\b[0-9](\.[0-9]){1,3}\b' } | select -First 1 | % { $matches[0] })
             Write-Verbose "Local version file ($rversionFile) says to use R $version."
         }
         else
