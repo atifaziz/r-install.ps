@@ -99,7 +99,7 @@ Function Install-R
 
     if (Test-Path -PathType Leaf $rScriptPath)
     {
-        Write-Verbose "R appear to be installed at `"$installPath`"."
+        Write-Verbose "R appears to be installed at `"$installPath`"."
         Write-Verbose "Running `"$rscriptPath`" with `"--version`" flag to determine version match."
 
         $testVersionText = & cmd '/c', $rScriptPath, '--version', '2>&1'
