@@ -42,7 +42,7 @@ Function Install-R
     [CmdletBinding()]
     Param(
         [Version] $Version,
-        [string]  $CRAN = 'https://cloud.r-project.org/',
+        [Uri]     $CRAN = 'https://cloud.r-project.org/',
         [string]  $InstallRoot,
         [string]  $InstallPath,
         [string]  $DownloadRoot,
