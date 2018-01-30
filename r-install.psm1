@@ -46,7 +46,8 @@ Function Install-R
         [string]  $InstallRoot,
         [string]  $InstallPath,
         [string]  $DownloadRoot,
-        [switch]  $Local)
+        [switch]  $Local,
+        [switch]  $SkipProxyScripts)
 
     # With some inspiration from:
     # https://github.com/krlmlr/r-appveyor
@@ -190,15 +191,18 @@ Function Install-R
 
     Write-Verbose "Generating proxy scripts for R and RScript."
 
-    if ($local)
+    if (-not $skipProxyScripts)
     {
-        echo "@`"%~dp0.R\bin\Rscript.exe`" %*" | Out-File -Encoding ascii Rscript.cmd
-        echo "@`"%~dp0.R\bin\R.exe`" %*"       | Out-File -Encoding ascii R.cmd
-    }
-    else
-    {
-        echo "@`"$rScriptPath`" %*" | Out-File -Encoding ascii Rscript.cmd
-        echo "@`"$rPath`" %*"       | Out-File -Encoding ascii R.cmd
+        if ($local)
+        {
+            echo "@`"%~dp0.R\bin\Rscript.exe`" %*" | Out-File -Encoding ascii Rscript.cmd
+            echo "@`"%~dp0.R\bin\R.exe`" %*"       | Out-File -Encoding ascii R.cmd
+        }
+        else
+        {
+            echo "@`"$rScriptPath`" %*" | Out-File -Encoding ascii Rscript.cmd
+            echo "@`"$rPath`" %*"       | Out-File -Encoding ascii R.cmd
+        }
     }
 }
 
