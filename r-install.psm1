@@ -95,6 +95,8 @@ Function Install-R
         $installPath = Join-Path $installRoot "R-$version"
     }
 
+    $uninstallerPath = Join-Path $installPath unins000.exe
+
     $isInstalled = $false
 
     $rBinPath    = Join-Path $installPath bin
@@ -122,7 +124,7 @@ Function Install-R
             {
                 Write-Error (
                     "Local R version mismatch! Installed version of R is $testVersion but requested version is $version. " +
-                    "Uninstall current version (e.g. run `"$(Join-Path $installPath unins000.exe)`") before using another.")
+                    "Uninstall current version (e.g. run `"$uninstallerPath`") before using another.")
             }
         }
         else
@@ -188,7 +190,7 @@ Function Install-R
         if ($installerExitCode -eq 0)
         {
             Write-Verbose "R $version appears to have installed successfully."
-            Write-Verbose "To uninstall, run `"$(Join-Path $installPath unins000.exe)`"."
+            Write-Verbose "To uninstall, run `"$uninstallerPath`"."
         }
         else
         {
