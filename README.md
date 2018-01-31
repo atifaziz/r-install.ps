@@ -42,6 +42,11 @@ import this module, `cd` to the directory of the project and run the
 Once R is installed sucessfully, run the `Install-RPackages` to install the
 project's dependencies or the packages it requires.
 
+## Troubleshooting
+
+To troubleshoot the installation of R or packages, run `Install-R` or
+`Install-RPackages` with the `-Verbose` flag.
+
 
 [repres]: https://cran.r-project.org/web/views/ReproducibleResearch.html
 [checkpoint]: https://github.com/RevolutionAnalytics/checkpoint
