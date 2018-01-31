@@ -210,7 +210,7 @@ function Install-RPackages
 {
     [CmdletBinding()]
     Param([DateTime] $CheckpointDate,
-          [string]   $CheckpointLocation = (Join-Path $env:USERPROFILE '.checkpoint'))
+          [string]   $CheckpointLocation = '~/')
 
     $ErrorActionPreference = 'Stop'
 
@@ -219,12 +219,13 @@ function Install-RPackages
     $tempScriptPath = [IO.Path]::GetTempFileName()
     Write-Verbose "Using `"$tempScriptPath`" as packge installation script."
 
-    Write-Verbose "Check point location is `"$checkpointLocation`"."
+    $fullCheckpointPath = Join-Path ('' -replace '^~', [Environment]::GetFolderPath('Desktop')) .checkpoint
+    Write-Verbose "Check point location is `"$fullCheckpointPath`"."
 
-    if (-not (Test-Path $checkpointLocation))
+    if (-not (Test-Path $fullCheckpointPath))
     {
-        Write-Verbose "Creating checkpoint location `"$checkpointLocation`" because it does not exist."
-        md $checkpointLocation -Force | Out-Null
+        Write-Verbose "Creating checkpoint location `"$checfullCheckpointPathkpointLocation`" because it does not exist."
+        md $fullCheckpointPath -Force | Out-Null
     }
     if (-not $checkpointDate)
     {
@@ -250,7 +251,7 @@ function Install-RPackages
 install.packages('checkpoint', repos = 'https://cloud.r-project.org/')
 require(checkpoint)
 checkpoint('$('{0:yyyy-MM-dd}' -f $checkpointDate)',
-           checkpointLocation = '$((Split-Path $checkpointLocation) -replace '\\', '/')',
+           checkpointLocation = '$($checkpointLocation -replace '\\', '/')',
            verbose = $(if ($VerbosePreference -eq 'Continue') { 'TRUE' } else { 'FALSE' }))
 # -----------------------------------------------------
 "
