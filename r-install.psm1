@@ -235,7 +235,7 @@ function Install-RPackages
     $tempScriptPath = [IO.Path]::GetTempFileName()
     Write-Verbose "Using `"$tempScriptPath`" as packge installation script."
 
-    $fullCheckpointPath = Join-Path ('' -replace '^~', [Environment]::GetFolderPath('Desktop')) .checkpoint
+    $fullCheckpointPath = Join-Path ($checkpointLocation -replace '^~', [Environment]::GetFolderPath('Desktop')) .checkpoint
     Write-Verbose "Check point location is `"$fullCheckpointPath`"."
 
     if (-not (Test-Path $fullCheckpointPath))
