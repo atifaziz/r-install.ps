@@ -139,11 +139,11 @@ Function Install-R
     {
         $downloadTempPath = Join-Path $env:TEMP 'R-win.exe'
         $installerPath = [IO.Path]::Combine($downloadRoot, $version, 'R-win.exe')
+        $url = New-Object System.Uri $cran, "/bin/windows/base/R-$version-win.exe"
 
         if (-not (Test-Path -PathType Leaf $installerPath))
         {
             md (Split-Path $installerPath) -Force | Out-Null
-            $url = New-Object System.Uri $cran, "/bin/windows/base/R-$version-win.exe"
             Write-Verbose "Downloading R $version from $url to `"$installerPath`"..."
             Invoke-WebRequest $url -OutFile $downloadTempPath
             move $downloadTempPath $installerPath
@@ -151,6 +151,17 @@ Function Install-R
         else
         {
             Write-Verbose "R $version installer appears to have been already downloaded to `"$installerPath`"."
+            Write-Verbose "Validating file size..."
+            $headers = (Invoke-WebRequest -Method Head $url).Headers
+            $remoteLength = [long]$headers['Content-Length']
+            $localLength = (Get-Item $installerPath).Length
+            if ($localLength -ne $remoteLength) {
+                "Remote and local file sizes do not match. " +
+                "Remote is $($remoteLength.ToString('N0')) bytes long whereas local is $($localLength.ToString('N0')) bytes long. " +
+                "The downloaded file may be corrupted or out of date. " +
+                "Delete `"$installPath`" and retry." `
+                | Write-Error
+            }
         }
 
         Write-Verbose "Running R installer..."
