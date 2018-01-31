@@ -69,6 +69,10 @@ Function Install-R
         $downloadRoot = Join-Path $env:TEMP R
     }
 
+    Write-Verbose "Determining latest R version..."
+    $lastestVersion = [Version](ConvertFrom-JSON (Invoke-WebRequest http://rversions.r-pkg.org/r-release-win).Content).version
+    Write-Verbose "The latest version of R is $latestVersion."
+
     if (-not $version)
     {
         $rversionFile = 'rversion.txt'
@@ -80,8 +84,8 @@ Function Install-R
         }
         else
         {
-            Write-Verbose "No local version file found so determining latest R version..."
-            $version = [Version](ConvertFrom-JSON (Invoke-WebRequest http://rversions.r-pkg.org/r-release-win).Content).version
+            Write-Verbose "No local version file found so asuuming latest R version ($latestVersion)."
+            $version = $lastestVersion
         }
     }
 
@@ -139,7 +143,8 @@ Function Install-R
     {
         $downloadTempPath = Join-Path $env:TEMP 'R-win.exe'
         $installerPath = [IO.Path]::Combine($downloadRoot, $version, 'R-win.exe')
-        $url = New-Object System.Uri $cran, "/bin/windows/base/R-$version-win.exe"
+        $rBase = if ($version -lt $lastestVersion) { "base/old/$version" } else { 'base' }
+        $url = New-Object System.Uri $cran, "/bin/windows/$rBase/R-$version-win.exe"
 
         if (-not (Test-Path -PathType Leaf $installerPath))
         {
