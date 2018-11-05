@@ -13,7 +13,7 @@ The PowerShell module contains commands to do the following:
 - Generate convenience batch scripts called `R.cmd` and `Rscript.cmd`
   that invoke the right version of `R.exe` and `Rscript.exe` respectively.
 
-All that is required for a the developer of an R project to take advantage of
+All that is required for the developer of an R project to take advantage of
 the module and its commands is to use [checkpoint][checkpoint] like shown
 in the example below:
 
